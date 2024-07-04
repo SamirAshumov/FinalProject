@@ -1,0 +1,123 @@
+﻿@model ListOfQAndExamId
+
+@{
+    ViewData["Title"] = "Questions";
+    Layout = "~/Views/Shared/SideNavBarCreateExam.cshtml";
+
+}
+
+
+<h1 class="exam-name">@Model.ExamName</h1>
+@{
+    int cntQuestion = 1;
+}
+@foreach (var item in Model.questions)
+{
+    <div class="question-container">
+
+        <div>
+            <p id="Question-Number">
+                Question No. @cntQuestion
+            </p>
+        </div>
+
+        <div class="question-container-wal-marah-de-mgd">
+            <div class="question-txt-container">
+                <p>@item.Head</p>
+            </div>
+
+            <div class="answer-container">
+                <p>A</p>
+                <div class="question-txt-container">
+                    <p>@item.a</p>
+                    @{
+                        if (item.SelectedAnswer == 1)
+                        {
+                            <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                        }
+                        else
+                        {
+                            <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                        }
+                    }
+                </div>
+
+            </div>
+
+            <div class="answer-container">
+                <p>B</p>
+                <div class="question-txt-container">
+                    <p>@item.b</p>
+                    @{
+                        if (item.SelectedAnswer == 2)
+                        {
+                            <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                        }
+                        else
+                        {
+                            <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="answer-container">
+                <p>C</p>
+                <div class="question-txt-container">
+                    <p>@item.c</p>
+                    @{
+                        if (item.SelectedAnswer == 3)
+                        {
+                            <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                        }
+                        else
+                        {
+                            <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="answer-container">
+                <p>D</p>
+                <div class="question-txt-container">
+                    <p>@item.d</p>
+                    @{
+                        if (item.SelectedAnswer == 4)
+                        {
+                            <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                        }
+                        else
+                        {
+                            <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="option-container">
+
+            <a onclick="show_more_menu(event)" asp-controller="Exam" asp-action="DeleteQuestion"
+                asp-route-Id="@item.QuestionId" class="btn btn-danger">Delete</a>
+            <a asp-controller="Exam" asp-action="EditQuestion" asp-route-Id="@item.QuestionId"
+                class="btn btn-success">Edit</a>
+        </div>
+    </div>
+    cntQuestion++;
+}
+
+<a asp-action="Index" asp-controller="Exam" class="btn btn-secondary">
+    back to Exams
+</a>
+
+
+<script>
+    function show_more_menu(e) {
+        if (!confirm(`Are you sure delete this Question?`)) e.preventDefault();
+    }
+</script>
+
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamViewQuestions.css">
+}

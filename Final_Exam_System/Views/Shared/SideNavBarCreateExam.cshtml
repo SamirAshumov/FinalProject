@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model ListOfQAndExamId
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css">
+    <link rel="stylesheet" href="~/css/SideNavBarCreateExam.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    @RenderSection("PageStyle", required: false)
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body onload="Add_pre()">
+
+    <div class="sidebar">
+
+        <div class="container-header">
+            <h3>Exam Settings</h3>
+        </div>
+        <div class="container-subHeader">
+            <p>Questions</p>
+        </div>
+
+        <table id="itemsTable" class="items-table">
+            <thead>
+                <tr>
+                </tr>
+
+
+            </thead>
+        </table>
+        <a asp-controller="Exam" asp-action="CreateQuestion" asp-route-Id="@Model.Id" class="btn btn-primary"
+            onclick="addItem()" style="margin-left:52px;">Create Question</a>
+
+        <div></div>
+        <div class="container-subHeader">
+            <p>Exam Date: </p>
+            <p>@Model.StartTime</p>
+        </div>
+        <div class="container-subHeader">
+            <p>Exam Code: </p>
+            <p>@Model.Id</p>
+        </div>
+    </div>
+    <div class="cont">
+        @RenderBody()
+    </div>
+
+    <script>
+        var counter = 0; // Counter for number of items in current row
+        var cnt = 1;
+
+
+        function addItem() {
+            // Create a new row in the table if current row is full
+            var table = document.getElementById("itemsTable");
+            if (counter == 4 || table.rows.length == 0) {
+                var row = table.insertRow();
+                counter = 0;
+            } else {
+                var row = table.rows[table.rows.length - 1];
+            }
+            // Insert the item name into the new cell
+            var cell = row.insertCell();
+
+            cell.innerHTML = `<p class="number-of-exam">` + cnt + `</p>`;
+            // Increment the counter
+            cnt++;
+            counter++;
+        };
+        function Add_pre() {
+            var model = @Html.Raw(Json.Serialize(Model.questions));
+            for (let i = 0; i < model.length; i++) {
+                addItem();
+            }
+        };
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+﻿@model StringId
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<img src="images/home_img.jpg" alt="">
+    
+<div class="mo">
+    <h2>Free Exam System</h2>
+    <p>You can build multiple-choice questions exam.</p>
+</div>
+<form asp-area="Identity" asp-page="/Account/Login">
+    <button class="custom-btn btn-1">Make Exam</button>
+</form>
+
+<form asp-controller="StudentAnswer" asp-action="Index">
+    <div class="input-container">
+        <input asp-for="Id"  placeholder="Enter Exam ID" required="" id ="IdInput">
+        <span asp-validation-for="Id" class="text-danger"></span>
+        <button class="invite-btn" type="submit" id="button">
+            Join
+        </button>
+    </div>
+</form>
+
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/HomeIndex.css">
+}

@@ -1,0 +1,48 @@
+﻿@model Exam
+@{
+    ViewData["Title"] = "Create Exam";
+    Layout = "~/Views/Shared/_SideNavBar.cshtml";
+}
+
+<form asp-controller="Exam" asp-action="CreateExam" id="exam-form">
+    @* <div class="divdanger" asp-validation-summary="All"></div> *@
+    <div class="container">
+        <p>Create New Exam</p>
+        <div class="exam-container">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration" class="form-control" required type="number" min="3" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime" class="form-control" required />
+            </div>
+
+            <button id="my-btn" type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+    </div>
+</form>
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamCreateExam.css">
+}
+
+<script>
+    const form = document.querySelector('#exam-form');
+    const myButton = document.querySelector('#my-btn');
+    myButton.addEventListener('click', (event) => {
+        const now = new Date();
+        const startTimeInput = document.querySelector('#StartTime');
+        const startTime = new Date(startTimeInput.value);
+        if (startTime <= now) {
+            event.preventDefault(); // Prevent the form from submitting
+            alert('Please enter a start time after the current time.'); // Show an alert message
+            return;
+        }
+    });
+</script>

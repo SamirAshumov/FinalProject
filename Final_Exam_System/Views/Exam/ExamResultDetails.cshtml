@@ -1,0 +1,147 @@
+﻿@model ExamAnswerResult
+@{
+    Layout = "~/Views/Shared/_StudentExamBar.cshtml";
+    int cntQuestion = 1;
+}
+@functions {
+    public string GetBackgroundStyle(int trueAnswer, int selectedAnswer, int curOption)
+    {
+        if (trueAnswer == curOption)
+            return "background-color:#00A607; opacity: 0.6;";
+        else if (selectedAnswer == curOption)
+            return "background-color:#E00000; opacity: 0.6;";
+        return "background-color:white";
+    }
+}
+<div class="main-container">
+    <div class="header-container">
+        <p>@Model.ExamName</p>
+        <p>@Model.StudentName</p>
+    </div>
+    <div class="studentInfo-container">
+        <div class="info">
+            <p>@Model.StudentName</p>
+            <p>@Model.StudentId</p>
+        </div>
+        <div class="info">
+            @if (@Model.passed)
+            {
+                <p style="color:#349D38;">Passed</p>
+            }
+            else
+            {
+                <p style="color:#E00000;">Failed</p>
+            }
+
+            <p>@Model.score/@Model.numOfQuestions</p>
+        </div>
+    </div>
+    <div class="Questions-container">
+        @foreach (var item in Model.lstOfQuestionAnswers)
+        {
+            <div class="question-container">
+
+                <div class="questionHeader-container">
+                    <p id="Question-Number">
+                        Question No. @cntQuestion
+                    </p>
+                    @if (item.SelectedAnswer == item.TrueAnswer)
+                    {
+                        <span><i class="fa fa-regular fa-circle-check fa-2x" style="color:#00A607"></i></span>
+                    }
+                    else
+                    {
+                        <span><i class="fa fa-regular fa-circle-xmark fa-2x" style="color:#E00000"></i></span>
+                    }
+
+                </div>
+
+                <div class="question-container-wal-marah-de-mgd">
+                    <div class="question-txt-container">
+                        <p>@item.Head</p>
+                    </div>
+
+                    <div class="answer-container">
+                        <p>A</p>
+
+                        <div class="question-txt-container"
+                             style="@GetBackgroundStyle((int)item.TrueAnswer,(int)item.SelectedAnswer,1)">
+
+                            <p>@item.a</p>
+                            @{
+                                if (item.SelectedAnswer == 1)
+                                {
+                                    <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                                }
+                                else
+                                {
+                                    <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                                }
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="answer-container">
+                        <p>B</p>
+                        <div class="question-txt-container"
+                             style="@GetBackgroundStyle((int)item.TrueAnswer,(int)item.SelectedAnswer,2)">
+                            <p>@item.b</p>
+                            @{
+                                if (item.SelectedAnswer == 2)
+                                {
+                                    <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                                }
+                                else
+                                {
+                                    <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="answer-container">
+                        <p>C</p>
+                        <div class="question-txt-container"
+                             style="@GetBackgroundStyle((int)item.TrueAnswer,(int)item.SelectedAnswer,3)">
+                            <p>@item.c</p>
+                            @{
+                                if (item.SelectedAnswer == 3)
+                                {
+                                    <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                                }
+                                else
+                                {
+                                    <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="answer-container">
+                        <p>D</p>
+                        <div class="question-txt-container"
+                             style="@GetBackgroundStyle((int)item.TrueAnswer,(int)item.SelectedAnswer,4)">
+                            <p>@item.d</p>
+                            @{
+                                if (item.SelectedAnswer == 4)
+                                {
+                                    <span class="icon"><i class="fa fa-circle-check"> </i></span>
+                                }
+                                else
+                                {
+                                    <span class="icon"><i class="fa fa-regular fa-circle"> </i></span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            cntQuestion++;
+        }
+    </div>
+</div>
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamResultDetails.css">
+}

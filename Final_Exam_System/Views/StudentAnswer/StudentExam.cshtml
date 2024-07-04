@@ -1,0 +1,174 @@
+﻿@model ExamInformation
+
+@{
+    ViewData["Title"] = "Exam";
+    Layout = "~/Views/Shared/_StudentExamBar.cshtml";
+    var currentExamIndex = Model.Question.Index + 1;
+
+}
+
+<form asp-controller="StudentAnswer" asp-action="StudentExam" method="post" 
+style="height:100%" id="exam-form">
+    <div class="main-container">
+        <div class="exam-header">
+            <p style="margin-left: 393px;"> Online MCQ Exam </p>
+            <p style="margin-right: 64px;">Time Remaining</p>
+        </div>
+
+        <div class="center-container">
+
+            <div class="question-container">
+                <p>Question - @currentExamIndex</p>
+
+                <hr style="margin-bottom: 0px;  margin-top: 0px; border-top: 2px solid;width: 100%;">
+
+                <input type="hidden" asp-for="@Model.Question.AnswerId" />
+                
+                <div class="form-group innerQuestion-container">
+                    <h3>@Model.Question.Head</h3>
+
+                    <div class="form-check answer-container">
+                        <input class="custome-radio" type="radio" asp-for="Question.SelectedAnswer" value="1" />
+                        <label class="custome-label" asp-for="Question.SelectedAnswer">
+                            @Model.Question.a
+                        </label>
+                    </div>
+
+                    <div class="form-check answer-container">
+                        <input class="custome-radio" type="radio" asp-for="Question.SelectedAnswer" value="2" />
+                        <label class="custome-label" asp-for="Question.SelectedAnswer">
+                            @Model.Question.b
+                        </label>
+                    </div>
+
+                    <div class="form-check answer-container">
+                        <input class="custome-radio" type="radio" asp-for="Question.SelectedAnswer" value="3" />
+                        <label class="custome-label" asp-for="Question.SelectedAnswer">
+                            @Model.Question.c
+                        </label>
+                    </div>
+
+                    <div class="form-check answer-container">
+                        <input class="custome-radio" type="radio" asp-for="Question.SelectedAnswer" value="4" />
+                        <label class="custome-label" asp-for="Question.SelectedAnswer">
+                            @Model.Question.d
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="side-bar-container">
+                <div class="timeRemaining-container">
+                    <div class="hoursRemaining-container">
+                        <p id="hour-remain">00</p>
+                        <p>Hours</p>
+                    </div>
+                    <div class="hoursRemaining-container">
+                        <p id="minute-remain">00</p>
+                        <p>Minutes</p>
+                    </div>
+                    <div class="hoursRemaining-container">
+                        <p id="second-remain">00</p>
+                        <p>Seconds</p>
+                    </div>
+                   
+                </div>
+                <div class="examName-container">
+                    <p>@Model.ExamName</p>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="Question.Index" />
+
+        <div class="footer-container">
+            <div class="btns-container">
+                <div class="form-group" style="margin: 0px 0px 0px 64px;">
+                    @if (Model.Question.Index != 0)
+                    {
+                        <button type="submit" name="action" value="prev"
+                            class="custom-btn btn-1" style="border-radius: 32px 0px 0px 32px;">
+                            Previous
+                        </button>
+                    }
+                    @if (Model.Question.Index + 1 != Model.NumOfQuestions)
+                    {
+                        <button type="submit" name="action" value="next"
+                                class="custom-btn btn-1" style="border-radius: 0px 32px 32px 0px;">
+                            Next
+                        </button>     
+                    }
+                </div>
+                <div style="margin-right:92px;">
+                    <button  type ="submit" id="submit" name ="action" value="submit" class="custom-btn btn-2">
+                        Submit
+                    </button>
+                </div>
+            </div>
+            <hr style="border-top: 1px solid black;">
+            <div class="info-container">
+                <div id="circle" style="background: #00A607;"></div>
+                <p>Answered</p>
+                <div id="circle" style="background: red;"> </div>
+                <p>Not Answered</p>
+                <div id="circle" style="background: #303F9F;"> </div>
+                <p>Current</p>
+                <div id="circle" style="background: #7E7171;"> </div>
+                <p>Not Seen</p>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<script>
+    $('.custome-radio').on('click', function () {
+        var selectedAnswer = $(this).val();
+
+        $.ajax({
+            url: '/StudentAnswer/CalculateResult',
+            method: 'POST',
+            data: {
+                answerId: @Model.Question.AnswerId,
+                selectedChoice: selectedAnswer,
+                questionIndex: @Model.Question.Index
+            },
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    });
+</script>
+
+<script>
+    const examForm = document.getElementById('exam-form');
+
+    var x = setInterval(function () {
+        var countDownDate = new Date('@Model.ExamDate.ToString()').getTime(); // Move this line here
+        // get the exam form from the page
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("hour-remain").innerHTML = hours;
+        document.getElementById("minute-remain").innerHTML = minutes;
+        document.getElementById("second-remain").innerHTML = seconds;
+
+        if (distance < 0) {
+            console.log('Submitting form...');
+            window.location.href = '@Url.Action("Submit",
+            "StudentAnswer", new { AnswerId = @Model.Question.AnswerId })';
+            return;
+        }
+    }, 1000);
+</script>
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/StudentAnswerStudentExam.css">
+}

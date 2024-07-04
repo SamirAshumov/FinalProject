@@ -1,0 +1,34 @@
+﻿@model int
+
+<div class="main-container">
+  <div id="box" class="circ">
+    <div class="load">Loading . . . </div>
+    <div class="hands"></div>
+    <div class="body"></div>
+    <div class="head">
+      <div class="eye"></div>
+    </div>
+  </div>
+  <div id="box2" class="result">
+    <div>
+
+      <h3>Your Score:</h3>
+      <h4>@Model</h4>
+    </div>
+    <img src="~/images/results_img.png" />
+  </div>
+</div>
+<script>
+  setTimeout(() => {
+    const box = document.getElementById('box');
+    box.style.display = 'none';
+  }, 5000);
+  setTimeout(() => {
+    const box = document.getElementById('box2');
+    box.style.display = 'flex';
+  }, 5000); 
+</script>
+
+@section PageStyle {
+  <link rel="stylesheet" href="~/css/StudentAnswerSubmit.css">
+}

@@ -1,0 +1,84 @@
+﻿@model Results
+
+@{
+
+    Layout = "~/Views/Shared/_StudentExamBar.cshtml";
+    var currentIndex = 0;
+}
+<div class="main-container">
+    <div class="examName-container">
+        <p>Exam Name: @Model.ExamName</p>
+    </div>
+
+    <div class="examInfo-container">
+        <div class="totalStudent-container">
+            <span><i class="fa fa-regular fa-circle-user fa-3x" style="color:#1590A4"></i></span>
+            <div class="Info-container">
+                <p>Total Student</p>
+                <p>@Model.answers.Count</p>
+            </div>
+        </div>
+        <div class="totalStudent-container">
+            <span><i class="fa fa-regular fa-circle-check fa-3x" style="color:#00A607"></i></span>
+            <div class="Info-container">
+                <p>Passed Student</p>
+                <p>@Model.numberOfPassedStudent</p>
+            </div>
+        </div>
+        <div class="totalStudent-container">
+            <span><i class="fa fa-light fa-circle-exclamation fa-3x" style="color:#E00000"></i></span>
+            <div class="Info-container">
+                <p>Failed Students</p>
+                <p>@Model.numberOfFailedStudent</p>
+            </div>
+        </div>
+        <div class="totalStudent-container" style="border-right:none">
+            <span><i class="fa fa-thin fa-bolt fa-3x" style="color:#E1DA2E"></i></span>
+            <div class="Info-container">
+                <p>Average Score</p>
+                <p>@Model.averageGrade</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="examResults-container">
+        <div class="label-container">
+            <p>Name</p>
+            <p>ID</p>
+            <p>Status</p>
+            <p>Score</p>
+            <p>Grade</p>
+            <p>Details</p>
+
+        </div>
+        @foreach (var i in Model.answers)
+        {
+            <div class="result-container">
+                <p >@i.StudentName</p>
+                <p style="margin-left: 202px;">@i.StudentId</p>
+                @if (@Model.isStudentPassed[currentIndex])
+                {
+                    <p style="color:#349D38;margin-left: 203px;">Passed</p>
+                }
+                else
+                {
+                    <p style="color:#E00000;margin-left: 203px;">Failed</p>
+                }
+                <p style="margin-left: 217px;">@i.Score</p>
+                <p style="margin-left: 235px;">@Model.StudentsStatus[currentIndex]</p>
+                <a style="margin-left: 201px;"asp-action="ExamResultDetails" asp-controller="Exam" asp-route-id="@i.AnswerId">
+
+                    more Details
+
+                </a>
+            </div>
+            currentIndex++;
+        }
+
+    </div>
+
+</div>
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamViewResults.css">
+}

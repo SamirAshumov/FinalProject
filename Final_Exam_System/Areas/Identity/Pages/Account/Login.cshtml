@@ -1,0 +1,158 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+
+            <div class="form-floating">
+                <img src="~/images/logo.png" alt="" >
+            </div>
+
+            <form id="account" method="post">
+
+                <div class="form-floating">
+                    <h2>Teacher Login</h2>
+                </div>
+
+                <hr />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-floating"> 
+                    <label asp-for="Input.Email" class="custom_label form-label"></label>
+                    <div style="">
+                        <input asp-for="Input.Email" class="custom_input form-control" autocomplete="username" aria-required="true"placeholder="name@domain.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-floating">
+                    
+                    <label asp-for="Input.Password" class="custom_label form-label"></label>
+                    <input asp-for="Input.Password" class="custom_input form-control" autocomplete="current-password" aria-required="true" placeholder="at least 8 characters" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div style="margin-top:12px">
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="login-submit" type="submit" class="custom-btn btn-1">Log in</button>
+                </div>
+
+                <div style="display:inline-flex; margin-top:4px;">
+                    
+                    <p>
+                        <a style="color: #000000;" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign up</a>
+                    </p>
+                </div>
+
+            </form>
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <img src="~/images/login_img.png" class="login_custom"alt="">
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+<style>
+    .login_custom{
+       
+    }
+    .custom_label {
+        position:relative;
+        font-style: normal;
+        font-weight: 600;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px; 
+        margin-bottom:0px;
+        line-height: 27px;
+        color: #000000;
+    } 
+    .custom_input {
+        height: 40px;
+        top: 8px;
+        margin-bottom: 12px;
+        width: 362px;
+        color: black;
+        border: 2px solid rgba(178, 173, 173, 0.85);
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        align-items: start;
+        border-radius: 5px;
+        padding: 10px 25px;
+        position: relative;
+        background: transparent;
+        max-width: 362px;
+    }
+
+    .custom_input:active {
+        border: 2px solid rgb(195, 200, 201);
+    }
+
+    .custom-btn {
+        width: 362px;
+        height: 40px;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+        outline: none;
+    }
+
+    .btn-1 {
+        background: rgba(21,144,164,1);
+        border: none;
+    }
+
+    .btn-1:hover {
+        background: rgb(24, 182, 206);
+    }
+
+</style>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

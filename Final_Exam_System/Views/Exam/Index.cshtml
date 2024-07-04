@@ -1,0 +1,75 @@
+﻿@model List<ExamListAndNumQuestions>
+@{
+
+    Layout = "~/Views/Shared/_SideNavBar.cshtml";
+}
+
+<div class="top-section">
+    <h2>Exam List</h2>
+    <img src="~/images/examList_img.png" />
+</div>
+<div class="bottom-section">
+    <div class="table-titles">
+        <p>Exam</p>
+        <p>Questions</p>
+        <p>Date</p>
+        <p>Time Remaining</p>
+    </div>
+    <div class="items">
+        <ul class="listOfItem">
+            @foreach (var x in @Model)
+            {
+                var numberOfQuestions = x.Questions.Count();
+                DateTime EndTime = (DateTime)x.Exam.EndTime;
+                DateTime CurTime = DateTime.Now;
+                string ActionName = EndTime > CurTime ? "ViewQuestions" : "ViewResults";
+                var ExamId = @x.Exam.ExamId.ToString();
+                <li>
+                    <a class="Examitem" asp-controller="Exam" asp-action="@ActionName" asp-route-Id="@x.Exam.ExamId">
+                        <p>@x.Exam.Title</p>
+
+                        <p>
+                            @numberOfQuestions
+                        </p>
+
+                        <p>@x.Exam.StartTime</p>
+                        <p id="@ExamId"></p> 
+                    </a>
+                    <a onclick="show_more_menu(event)" asp-controller="Exam" asp-action="Delete" asp-route-id="@x.Exam.ExamId"
+                        class="btn btn-danger ">
+                        <span class="icon"><i class="fa fa-trash"></i></span>
+                        <script>
+                            function show_more_menu(e) {
+                                if (!confirm(Are you sure delete this Exam ?)) e.preventDefault();
+                            }
+                        </script>
+                    </a>
+                </li>
+
+   
+                <script>
+                    var x = setInterval(function () {
+                        var countDownDate = new Date('@x.Exam.StartTime.ToString()').getTime(); // Move this line here
+                        var now = new Date().getTime();
+                        var distance = countDownDate - now;
+                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        document.getElementById("@ExamId").innerHTML = days + " d ," + hours + " h ," + minutes + " m ," + seconds + " s. ";
+                        if (distance < 0) {
+                            //clearInterval(x);
+                            document.getElementById("@ExamId").innerHTML = "PASSED";
+                        }
+                    }, 1000);
+                    @* console.log(@curIdx); *@
+                </script>
+            }
+        </ul>
+    </div>
+</div>
+
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamIndex.css">
+}

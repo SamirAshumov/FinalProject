@@ -1,0 +1,64 @@
+﻿@model Question
+
+
+
+<form method="post" class="custome-form">
+    <div class="question-container">
+        <div class="form-group">
+            <label asp-for="Head" style="font-size:18px;">Question Head:</label>
+            <textarea asp-for="Head" type="text" class="form-control custome-textarea"
+                      required style="width:800px;"></textarea>
+        </div>
+       
+        <div class="form-group answer-container">
+            <p>A</p>
+            <textarea asp-for="a" type="text" class="form-control custome-textarea" required></textarea>
+            <div class="form-check">
+                <input asp-for="SelectedAnswer" name="SelectedAnswer" class="form-check-input checked-answer" type="radio"
+                       value="1" required>
+            </div>
+        </div>
+
+        <div class="form-group answer-container">
+            <p>B</p>
+            <textarea asp-for="b" type="text" class="form-control custome-textarea" required></textarea>
+            <div class="form-check">
+                <input asp-for="SelectedAnswer" name="SelectedAnswer" class="form-check-input checked-answer" type="radio"
+                       value="2" required>
+
+            </div>
+        </div>
+
+        <div class="form-group answer-container">
+            <p>C</p>
+            <textarea asp-for="c" type="text" class="form-control custome-textarea" required></textarea>
+            <div class="form-check">
+                <input asp-for="SelectedAnswer" name="SelectedAnswer" class="form-check-input checked-answer" type="radio"
+                       value="3" required>
+            </div>
+        </div>
+
+        <div class="form-group answer-container">
+            <p>D</p>
+            <textarea asp-for="d" type="text" class="form-control custome-textarea" required></textarea>
+            <div class="form-check">
+                <input asp-for="SelectedAnswer" name="SelectedAnswer" class="form-check-input checked-answer" type="radio"
+                       value="4" required>
+            </div>
+        </div>
+
+        <div hidden>
+            <label asp-for="ExamId"></label>
+            <input asp-for="ExamId" class="form-control" value="@Model.ExamId" />
+            <label asp-for="QuestionId"></label>
+            <input asp-for="QuestionId" class="form-control" value="@Model.QuestionId" />
+        </div>
+         <div class="btn-container">
+            <button type="submit" class="btn btn-primary custome-btn">Submit</button>
+        </div>
+    </div>
+</form>
+
+@section PageStyle {
+    <link rel="stylesheet" href="~/css/ExamEditQuestion.css">
+}
